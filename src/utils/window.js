@@ -1,10 +1,9 @@
-const win = module.exports;
 const isWindow = require('./isWindow');
 
 function init (window) {
   // get wrapped window if using Shadow DOM polyfill
 
-  win.realWindow = window;
+  module.exports.realWindow = window;
 
   // create a TextNode
   const el = window.document.createTextNode('');
@@ -17,25 +16,25 @@ function init (window) {
     window = window.wrap(window);
   }
 
-  win.window = window;
+  module.exports.window = window;
 }
 
 if (typeof window === 'undefined') {
-  win.window     = undefined;
-  win.realWindow = undefined;
+  module.exports.window     = undefined;
+  module.exports.realWindow = undefined;
 }
 else {
   init(window);
 }
 
-win.getWindow = function getWindow (node) {
+module.exports.getWindow = function getWindow (node) {
   if (isWindow(node)) {
     return node;
   }
 
   const rootNode = (node.ownerDocument || node);
 
-  return rootNode.defaultView || rootNode.parentWindow || win.window;
+  return rootNode.defaultView || rootNode.parentWindow || module.exports.window;
 };
 
-win.init = init;
+module.exports.init = init;
